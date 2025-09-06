@@ -5,11 +5,11 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 
-from app.core.config import settings
-from app.db.session import SessionLocal
-from app.db.models.user import User
-from app.schemas.token import TokenData
-from app.crud import crud_user
+from Backend.core.config import settings
+from Backend.app.db.session import SessionLocal
+from Backend.app.db.models.user import User
+from Backend.app.schemas.token import TokenData
+from Backend.app.crud import crud_user
 
 # This tells FastAPI where to go to get a token.
 # The URL points to the /token endpoint in auth.py.
