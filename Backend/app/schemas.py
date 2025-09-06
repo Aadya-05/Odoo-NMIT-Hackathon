@@ -1,4 +1,4 @@
-# backend/app/models.py
+# backend/app/schemas.py
 
 from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel

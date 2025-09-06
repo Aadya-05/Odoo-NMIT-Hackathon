@@ -3,8 +3,8 @@
 from typing import Optional
 from sqlmodel import Session, select
 
-from app.models import User, UserCreate
-from app.core.security import get_password_hash
+from Backend.app.schemas import User, UserCreate
+from Backend.core.security import get_password_hash
 
 def get_user_by_email(session: Session, email: str) -> Optional[User]:
     """

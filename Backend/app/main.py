@@ -6,8 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
 
 # Import the database engine and the API routers
-from app.db.session import engine
-from app.api.v1.endpoints import auth, users, projects, tasks
+from ..app.db.base import engine
+from .api.v1.endpoints import auth, users, projects, tasks
 
 def create_db_and_tables():
     """
