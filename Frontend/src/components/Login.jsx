@@ -51,17 +51,15 @@ export default function Login() {
       <nav className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="text-lg font-medium text-gray-900">
-            Project Title
+            SynergySphere
           </div>
           <div className="flex items-center space-x-8">
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Home</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Solutions</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Work</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">About</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Login</a>
-            <button className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+            <a href="/" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Home</a>
+            
+            <a href="/login" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Login</a>
+            <a href='/signup' className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
               Sign Up
-            </button>
+            </a>
           </div>
         </div>
       </nav>
@@ -143,17 +141,7 @@ export default function Login() {
           </div>
 
           {/* Additional Options */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-500 text-sm mb-4">Or continue with</p>
-            <div className="flex space-x-4">
-              <button className="flex-1 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
-                Google
-              </button>
-              <button className="flex-1 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
-                GitHub
-              </button>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>

@@ -1,49 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Search, Plus, Menu, MoreHorizontal, Users, Calendar, Clock, Bell, X, Home, FolderOpen, Settings, User, LogOut } from 'lucide-react';
+import { 
+  Search, Plus, Menu, MoreHorizontal, Users, Calendar, Clock, Bell, X, Home, FolderOpen, Settings, User 
+} from 'lucide-react';
 
 export default function ProjectDashboard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: 'Website Redesign',
-      description: 'Complete overhaul of company website with modern design',
-      status: 'In Progress',
-      priority: 'High',
-      progress: 65,
-      due_date: '2025-10-15',
-      created_by: 1,
-      members: [1, 2, 3],
-      created_at: '2025-09-01'
-    },
-    {
-      id: 2,
-      name: 'Mobile App Development',
-      description: 'Native mobile app for iOS and Android platforms',
-      status: 'Planning',
-      priority: 'Medium',
-      progress: 20,
-      due_date: '2025-12-01',
-      created_by: 2,
-      members: [2, 4],
-      created_at: '2025-09-03'
-    },
-    {
-      id: 3,
-      name: 'Database Migration',
-      description: 'Migrate legacy database to new PostgreSQL system',
-      status: 'Review',
-      priority: 'High',
-      progress: 90,
-      due_date: '2025-09-30',
-      created_by: 1,
-      members: [1, 3, 4],
-      created_at: '2025-08-15'
-    }
-  ]);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState(null);
+
   const [newProject, setNewProject] = useState({
     name: '',
     description: '',
@@ -52,6 +19,7 @@ export default function ProjectDashboard() {
     due_date: '',
     progress: 0
   });
+
   const [currentUser] = useState({
     id: 1,
     name: 'John Doe',
@@ -59,34 +27,62 @@ export default function ProjectDashboard() {
     role: 'admin'
   });
 
+  // Fetch projects from backend
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('http://localhost:5000/api/projects');
+        if (!res.ok) throw new Error('Failed to fetch projects');
+        const data = await res.json();
+        setProjects(data);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+        setError(err.message);
+      }
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
+
   const handleInputChange = (e) => {
     setNewProject({ ...newProject, [e.target.name]: e.target.value });
   };
 
-  const handleCreateProject = () => {
+  const handleCreateProject = async () => {
     if (!newProject.name.trim()) {
       alert('Project name is required');
       return;
     }
 
-    const project = {
-      id: projects.length + 1,
-      ...newProject,
-      created_by: currentUser.id,
-      members: [currentUser.id],
-      created_at: new Date().toISOString().split('T')[0]
-    };
+    try {
+      const res = await fetch('http://localhost:5000/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...newProject,
+          created_by: currentUser.id
+        })
+      });
 
-    setProjects([...projects, project]);
-    setShowModal(false);
-    setNewProject({
-      name: '',
-      description: '',
-      status: 'Planning',
-      priority: 'Medium',
-      due_date: '',
-      progress: 0
-    });
+      if (!res.ok) throw new Error('Failed to create project');
+      const project = await res.json();
+      setProjects([...projects, project]);
+      setShowModal(false);
+      setNewProject({
+        name: '',
+        description: '',
+        status: 'Planning',
+        priority: 'Medium',
+        due_date: '',
+        progress: 0
+      });
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
   const getStatusColor = (status) => {
@@ -96,39 +92,6 @@ export default function ProjectDashboard() {
       case 'Review': return 'bg-purple-100 text-purple-700 border border-purple-200';
       case 'Completed': return 'bg-green-100 text-green-700 border border-green-200';
       default: return 'bg-gray-100 text-gray-700 border border-gray-200';
-    }
-  };
-
-  const joinProject = async (projectId) => {
-    try {
-      setError(null);
-      
-      const response = await fetch(`http://localhost:5000/api/projects/${projectId}/join`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to join project');
-      }
-
-      const updatedProject = await response.json();
-      
-      // Update the project in the list
-      setProjects(prev => 
-        prev.map(project => 
-          project.id === projectId ? updatedProject : project
-        )
-      );
-      
-      alert('Successfully joined the project!');
-    } catch (err) {
-      console.error('Error joining project:', err);
-      setError(`Failed to join project: ${err.message}`);
     }
   };
 
@@ -142,11 +105,11 @@ export default function ProjectDashboard() {
   };
 
   const getDaysUntilDue = (dueDate) => {
+    if (!dueDate) return '-';
     const today = new Date();
     const due = new Date(dueDate);
     const diffTime = due - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
   const filteredProjects = projects.filter(project =>
@@ -171,35 +134,27 @@ export default function ProjectDashboard() {
               </div>
               {!sidebarCollapsed && (
                 <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                  ProjectHub
+                  SynergySphere
                 </span>
               )}
             </div>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2">
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-700 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-100">
+             <nav className="flex-1 px-4 py-6 space-y-2">
+            <button onClick={() => navigate("/dashboard")} className="flex items-center space-x-3 px-4 py-3 text-gray-700 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-100">
               <Home size={20} />
               {!sidebarCollapsed && <span className="font-medium">Dashboard</span>}
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-200">
+            </button>
+
+            <a href = '/tasks'className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-200">
               <FolderOpen size={20} />
-              {!sidebarCollapsed && <span className="font-medium">Projects</span>}
+              {!sidebarCollapsed && <span className="font-medium">Tasks</span>}
             </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-200">
-              <Users size={20} />
-              {!sidebarCollapsed && <span className="font-medium">Team</span>}
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-200">
-              <Calendar size={20} />
-              {!sidebarCollapsed && <span className="font-medium">Calendar</span>}
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-200">
-              <Settings size={20} />
-              {!sidebarCollapsed && <span className="font-medium">Settings</span>}
-            </a>
+
+            
           </nav>
+
+
 
           {/* User Profile */}
           <div className="border-t border-gray-200/60 p-4">
@@ -345,7 +300,7 @@ export default function ProjectDashboard() {
                   <div className="flex items-center justify-between text-sm text-gray-500">
                     <div className="flex items-center space-x-2">
                       <Users size={14} />
-                      <span>{project.members.length} members</span>
+                      <span>{project.members ? project.members.length : 1} members</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Calendar size={14} />

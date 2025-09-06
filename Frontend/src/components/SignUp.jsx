@@ -47,7 +47,23 @@ export default function Signup() {
   };
 
   return (
+    
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <nav className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="text-lg font-medium text-gray-900">
+            SynergySphere
+          </div>
+          <div className="flex items-center space-x-8">
+            <a href="/" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Home</a>
+            
+            <a href="/login" className="text-gray-600 hover:text-gray-900 transition-colors text-sm">Login</a>
+            <a href='/signup' className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+              Sign Up
+            </a>
+          </div>
+        </div>
+      </nav>
       {/* Signup Card */}
       <div className="flex flex-grow items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
@@ -56,7 +72,7 @@ export default function Signup() {
               <h1 className="mb-2 text-2xl font-bold text-gray-900">Create an account</h1>
               <p className="text-gray-600">
                 Already have an account?{' '}
-                <a href="#" className="font-medium text-blue-600 hover:text-blue-700">Log in instead</a>
+                <a href="/login" className="font-medium text-blue-600 hover:text-blue-700">Log in instead</a>
               </p>
             </div>
 
