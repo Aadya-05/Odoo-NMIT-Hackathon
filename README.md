@@ -1,60 +1,56 @@
 
 # SynergySphere
 
-**SynergySphere** is a **Task and Project Management Web Application** that allows teams to collaborate efficiently, manage projects, track tasks, and monitor progress. Built with **React**, **Tailwind CSS**, and a **Node.js/Express** backend, the app provides an intuitive interface for managing projects and tasks.
-
-----------
+**SynergySphere** is a Task and Project Management Web Application that empowers teams to collaborate, manage projects, track tasks, and monitor progress efficiently. Built with React, Tailwind CSS, and a Node.js/Express backend, it delivers an intuitive interface for unified project and team oversight.
 
 ## Features
 
 -   **Project Management**
     
-    -   Create and manage projects.
+    -   Create and manage projects
         
-    -   Assign members to projects.
+    -   Assign members to projects
         
-    -   Track project status, priority, progress, and deadlines.
+    -   Track status, priority, progress, and deadlines
         
 -   **Task Management**
     
-    -   Add, update, and track tasks within projects.
+    -   Add, update, and track tasks within projects
         
-    -   Assign tasks to team members.
+    -   Assign tasks to team members
         
-    -   Search and filter tasks by name or description.
+    -   Search and filter tasks by name or description
         
-    -   Update task progress in real-time.
+    -   Update task progress in real-time
         
 -   **Team Collaboration**
     
-    -   Add team members.
+    -   Add team members
         
-    -   View members associated with tasks and projects.
+    -   View members on tasks and projects
         
-    -   Collaborative project updates.
+    -   Collaborative project updates
         
 -   **Dashboard & Analytics**
     
-    -   Overview of total projects, tasks, in-progress and completed projects.
+    -   Overview of projects, tasks, progress, and completions
         
-    -   Progress bars and due date indicators for quick insights.
+    -   Progress bars & due date indicators
         
-    -   Visual representation of project health and member contributions.
+    -   Visual analytics of project health and member contributions
         
 -   **User Profile**
     
-    -   Login and signup for users.
+    -   User login and signup
         
-    -   View logged-in user information and role in sidebar.
+    -   Sidebar role and info for logged-in user
         
 -   **Responsive UI**
     
-    -   Collapsible sidebar.
+    -   Collapsible sidebar
         
-    -   Clean, modern, mobile-friendly layout.
+    -   Clean, modern, and mobile-friendly layout
         
-
-----------
 
 ## Tech Stack
 
@@ -62,13 +58,96 @@
     
 -   **Backend:** Node.js, Express.js
     
--   **Database:** PostgreSQL / MySQL / your preferred SQL database
+-   **Database:** PostgreSQL, MySQL, or your preferred SQL DB
     
--   **State Management:** React `useState` and `useEffect` hooks
+-   **State Management:** React `useState`, `useEffect` hooks
     
 -   **API:** RESTful APIs for projects and tasks
     
 
-----------
+## Installation
+
+1.  **Clone the repository**
+    
+    ```
+    git clone [https://github.com/Aadya-05/Odoo-NMIT-Hackathon]
+    cd synergysphere
+    
+    ```
+    
+2.  **Install backend dependencies**
+    
+    ```
+    cd server
+    npm install
+    
+    ```
+    
+3.  **Install frontend dependencies**
+    
+    ```
+    cd ../frontend
+    npm install
+    
+    ```
+    
+4.  **Setup environment variables**
+    
+    -   Create a `.env` file in the `/server` folder with the following content:
+        
+    
+    ```
+    PORT=5000
+    DATABASE_URL=your_database_connection_string
+    
+    ```
+    
+
+## Usage
+
+**Start backend:**
+
+```
+cd server
+npm run dev
+
+```
+
+**Start frontend (open a new terminal):**
+
+```
+cd frontend
+npm run dev
+
+```
 
 ## Folder Structure
+
+```
+/server
+  ├─ middleware/
+  ├─ routes/
+  ├─ db.js
+  ├─ server.js
+  ├─ .env
+/frontend
+  ├─ public/
+  ├─ src/
+      ├─ assets/
+      ├─ components/
+          ├─ HomePage.jsx
+          ├─ Login.jsx
+          ├─ ProjectDashboard.jsx
+          ├─ SignUp.jsx
+          ├─ TaskDashboard.jsx
+      ├─ App.jsx
+      ├─ main.jsx
+      ├─ index.css
+      ├─ App.css
+  ├─ index.html
+
+```
+
+## License
+
+MIT License (add details as appropriate).
