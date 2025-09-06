@@ -5,6 +5,7 @@ import './App.css'
 import Signup from './components/SignUp'
 import Login from './components/Login'  // Changed to capital L and proper import
 import { BrowserRouter, Routes, Route } from "react-router-dom";  // Added Route import
+import ProjectDashboard from './components/ProjectDashboard'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />  {/* Use JSX element syntax */}
         <Route path="/signup" element={<Signup />} />  {/* Added signup route */}
         <Route path="/" element={<Signup />} />  {/* Default route */}
+        <Route path='/dashboard' element={<ProjectDashboard/>}/>
       </Routes>
     </BrowserRouter>
   )

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -7,6 +8,8 @@ export default function Login() {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({
@@ -15,9 +18,31 @@ export default function Login() {
     });
   };
 
-  const handleLogin = () => {
-    console.log('Login attempted:', formData);
-    alert('Login functionality would be implemented here!');
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        // Save token
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data));
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        alert(data.message || 'Login failed');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,16 +69,13 @@ export default function Login() {
       {/* Main Content */}
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 py-8">
         <div className="w-full max-w-md">
-          
-          {/* Login Form */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            
             {/* Header */}
             <div className="text-center mb-8">
               <h1 className="text-2xl font-semibold text-gray-900 mb-2">Login into account</h1>
               <p className="text-gray-500 text-sm">
                 Don't have an account?{' '}
-                <a href="#" className="text-blue-500 hover:text-blue-600 font-medium">
+                <a href="/signup" className="text-blue-500 hover:text-blue-600 font-medium">
                   signup instead
                 </a>
               </p>
@@ -61,7 +83,6 @@ export default function Login() {
 
             {/* Form Fields */}
             <div className="space-y-5">
-
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -112,12 +133,12 @@ export default function Login() {
               <div className="pt-4">
                 <button
                   onClick={handleLogin}
-                  className="w-full bg-gray-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all text-sm"
+                  disabled={loading}
+                  className="w-full bg-gray-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all text-sm"
                 >
-                  Login
+                  {loading ? "Logging in..." : "Login"}
                 </button>
               </div>
-
             </div>
           </div>
 
